@@ -1,0 +1,53 @@
+# Sample workflow to access AWS resources when workflow is tied to branch
+
+name: AWS Terraform
+on:
+  workflow_dispatch: # This allows workflow to be run on-demand
+    branches: 
+      - master 
+        # push:
+        #branches:
+        #- master
+
+permissions:
+      id-token: write
+      contents: read    # This is required for actions/checkout
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+        
+      - name: Git clone the repository
+        uses: actions/checkout@v3
+        
+      - name: configure aws credentials
+        uses: #aws-actions/configure-aws-credentials@v1 #put the new one
+        with:
+          role-to-assume: arn:aws:iam::046955552049:role/oidc_teamlucky
+          role-session-name: rolesession
+          aws-region: ap-southeast-2
+          
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_wrapper: false   # need this for outputs to work
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+        
+      - name: Terraform format
+        id: fmt
+        run: terraform fmt -recursive
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+        
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color -input=false
+        continue-on-error: true
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve -input=false        
