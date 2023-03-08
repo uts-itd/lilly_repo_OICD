@@ -1,13 +1,21 @@
 resource "aws_s3_bucket" "b" {
-  bucket = "leeli-tf-test-bucket"
+  bucket = "s3-website-test.hashicorp.com"
+  acl    = "public-read"
+  policy = file("policy.json")
 
-  tags = {
-    Name        = "My bucket"
-    Environment = "Dev"
+  website {
+    index_document = "./index.html"
+    error_document = "./error.html"
+
+    routing_rules = <<EOF
+[{
+    "Condition": {
+        "KeyPrefixEquals": "docs/"
+    },
+    "Redirect": {
+        "ReplaceKeyPrefixWith": "documents/"
+    }
+}]
+EOF
   }
-}
-
-resource "aws_s3_bucket_acl" "example" {
-  bucket = aws_s3_bucket.b.id
-  acl    = "private"
 }
