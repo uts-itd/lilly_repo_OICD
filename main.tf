@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "b" {
-  bucket = "s3-website-test.hashicorp.com"
+  bucket = "lilybucket123456"
   acl    = "public-read"
   policy = file("./policy.json")
 
