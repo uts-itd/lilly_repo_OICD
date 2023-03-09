@@ -1,10 +1,10 @@
 # Sample workflow to access AWS resources when workflow is tied to branch
 
-name: Terraform Apply
+name: Terraform Plan
 on:
-  workflow_dispatch: # This allows workflow to be run on-demand
+  push: # This allows workflow to be run on-demand
     branches: 
-      - master 
+      - main 
         # push:
         #branches:
         #- master
@@ -39,6 +39,7 @@ jobs:
       - name: Terraform format
         id: fmt
         run: terraform fmt -recursive
+        continue-on-error: true 
 
       - name: Terraform Validate
         id: validate
@@ -47,7 +48,4 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: terraform plan -no-color -input=false
-        continue-on-error: true
-
-      - name: Terraform Apply
-        run: terraform apply -auto-approve -input=false        
+        continue-on-error: true 

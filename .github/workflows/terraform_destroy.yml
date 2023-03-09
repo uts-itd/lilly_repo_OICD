@@ -1,6 +1,6 @@
 # Sample workflow to access AWS resources when workflow is tied to branch
 
-name: AWS Terraform
+name: Terraform Destroy
 on:
   workflow_dispatch: # This allows workflow to be run on-demand
 
