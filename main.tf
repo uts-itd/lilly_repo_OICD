@@ -1,4 +1,4 @@
-resource "aws_s3_bucket" "b" {
+resource "aws_s3_bucket" "test_bucket" {
   bucket = "lilybucket123456"
   acl    = "public-read"
   policy = file("./policy.json")
