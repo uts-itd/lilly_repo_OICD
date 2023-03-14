@@ -2,6 +2,7 @@
 
 name: Terraform Plan
 on:
+  workflow_dispatch:
   push: # This allows workflow to be run on-demand
     branches: 
       - main 
